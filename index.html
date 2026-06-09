@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Study Buddy - Study Together, Grow Together</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+
+        :root {
+            --purple-main: #7B2CBF;
+            --purple-light: #9D4EDD;
+            --blue-main: #3A86FE;
+            --blue-light: #E8F1FF;
+            --yellow-main: #FFBE0B;
+            --green-main: #06D6A0;
+            --dark-text: #2B2D42;
+            --light-bg: #F8F9FA;
+            --white: #FFFFFF;
+            --shadow-sm: 0 4px 6px rgba(0,0,0,0.05);
+            --shadow-md: 0 8px 20px rgba(0,0,0,0.1);
+            --radius-lg: 20px;
+            --radius-md: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--dark-text);
+            overflow-x: hidden;
+        }
+
+        header {
+            background-color: var(--white);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--purple-main);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span {
+            color: var(--blue-main);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-text);
+            font-weight: 600;
+            padding: 8px 12px;
+            border-radius: var(--radius-md);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: var(--blue-light);
+            color: var(--blue-main);
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: var(--radius-lg);
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--purple-main);
+            color: var(--purple-main);
+        }
+
+        .btn-outline:hover {
+            background: var(--purple-main);
+            color: var(--white);
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--purple-main), var(--purple-light));
+            color: var(--white);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--purple-main);
+        }
+
+        .page {
+            display: none; 
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page.active-page {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 32px;
+            color: var(--purple-main);
+        }
+
+        .section-title span {
+            color: var(--blue-main);
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            box-shadow: var(--shadow-sm);
+            border: 2px solid transparent;
+            transition: var(--transition);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--blue-light);
+        }
+
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+            padding: 60px 0;
+        }
+
+        .hero-text {
+            flex: 1;
+        }
+
+        .hero-text h1 {
+            font-size: 48px;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: var(--dark-text);
+        }
+
+        .hero-text h1 span {
+            background: linear-gradient(45deg, var(--purple-main), var(--blue-main));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-text p {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .hero-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+
+        .illustration-box {
+            width: 350px;
+            height: 350px;
+            background: linear-gradient(135deg, var(--blue-light), #F0E6FF);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .ill-element {
+            position: absolute;
+            font-size: 50px;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .ill-1 { color: var(--purple-main); top: 20px; left: 40px; animation-delay: 0s; }
+        .ill-2 { color: var(--yellow-main); bottom: 40px; left: 20px; animation-delay: 1s; }
+        .ill-3 { color: var(--green-main); top: 50px; right: 30px; animation-delay: 2s; }
+        .ill-4 { color: var(--blue-main); bottom: 20px; right: 50px; animation-delay: 3s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .group-tag {
+            text-align: center;
+            margin-top: 50px;
+            font-weight: bold;
+            color: #aaa;
+            font-size: 14px;
+            letter-spacing: 2px;
+        }
+
+        .form-container {
+            background: var(--white);
+            max-width: 550px;
+            margin: 0 auto;
+            padding: 40px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--dark-text);
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #E2E8F0;
+            border-radius: var(--radius-md);
+            outline: none;
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--purple-main);
+            box-shadow: 0 0 0 3px rgba(123, 44, 191, 0.15);
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .form-options a {
+            color: var(--blue-main);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: var(--blue-light);
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            border: 4px solid var(--white);
+            box-shadow: var(--shadow-sm);
+        }
+        .partner-card .avatar { background: #FFE3E3; color: #FF4D6D; }
+        .partner-card:nth-child(2) .avatar { background: #E8F1FF; color: var(--blue-main); }
+        .partner-card:nth-child(3) .avatar { background: #EAFDF8; color: var(--green-main); }
+
+        .card-meta {
+            background: var(--light-bg);
+            padding: 8px;
+            border-radius: var(--radius-md);
+            margin: 12px 0;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .room-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--green-main);
+            color: var(--white);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .room-features {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+            font-size: 13px;
+            color: #666;
+        }
+        .room-features span {
+            background: var(--light-bg);
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+
+        .stars {
+            color: var(--yellow-main);
+            margin: 10px 0 20px;
+        }
+
+        .planner-layout {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+        }
+
+        .planner-form-panel {
+            background: var(--white);
+            padding: 25px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            height: fit-content;
+        }
+
+        .tasks-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .task-card {
+            background: var(--white);
+            padding: 20px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 6px solid var(--purple-main);
+            transition: var(--transition);
+        }
+
+        .task-card.completed {
+            border-left-color: var(--green-main);
+            opacity: 0.7;
+        }
+
+        .task-card.completed .task-title {
+            text-decoration: line-through;
+            color: #888;
+        }
+
+        .task-info h4 {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .task-info span {
+            font-size: 13px;
+            color: #666;
+            background: var(--light-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .task-actions button {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-check { color: var(--green-main); margin-right: 10px; }
+        .btn-delete { color: #FF4D6D; }
+
+        .chat-window {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            max-width: 700px;
+            margin: 0 auto;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 500px;
+        }
+
+        .chat-header {
+            background: var(--purple-main);
+            color: var(--white);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background-image: radial-gradient(#9d4edd12 1px, transparent 0);
+            background-size: 20px 20px;
+        }
+
+        .msg {
+            max-width: 75%;
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            font-size: 15px;
+            line-height: 1.4;
+        }
+
+        .msg-user {
+            background: var(--blue-main);
+            color: var(--white);
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+
+        .msg-ai {
+            background: var(--light-bg);
+            color: var(--dark-text);
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+            border-left: 4px solid var(--purple-main);
+        }
+
+        .chat-input-area {
+            display: flex;
+            padding: 15px;
+            background: var(--white);
+            border-top: 1px solid #E2E8F0;
+            gap: 10px;
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #E2E8F0;
+            border-radius: var(--radius-md);
+            outline: none;
+        }
+
+        .badge-card {
+            background: var(--white);
+            padding: 30px;
+            border-radius: var(--radius-lg);
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .badge-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+            display: inline-block;
+            transition: transform 0.5s ease;
+        }
+
+        .badge-card:hover .badge-icon {
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        .progress-bar-bg {
+            background: #E2E8F0;
+            height: 10px;
+            border-radius: 5px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            background: linear-gradient(90deg, var(--green-main), var(--blue-main));
+            height: 100%;
+            width: 0%;
+            transition: width 1s ease-in-out;
+        }
+
+        .pricing-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .price-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 40px 30px;
+            width: 340px;
+            box-shadow: var(--shadow-sm);
+            text-align: center;
+            position: relative;
+        }
+
+        .price-card.premium-active {
+            border: 3px solid var(--purple-main);
+            transform: scale(1.05);
+        }
+
+        .premium-ribbon {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--yellow-main);
+            color: var(--dark-text);
+            font-size: 12px;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .price-amount {
+            font-size: 42px;
+            font-weight: 800;
+            margin: 20px 0;
+            color: var(--dark-text);
+        }
+
+        .price-features-list {
+            list-style: none;
+            text-align: left;
+            margin: 25px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .price-features-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+        }
+
+        .price-features-list li i.fa-check { color: var(--green-main); }
+        .price-features-list li i.fa-xmark { color: #FF4D6D; }
+
+        @media(max-width: 900px) {
+            .hero {
+                flex-direction: column-reverse;
+                text-align: center;
+                padding: 30px 0;
+            }
+            .planner-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media(max-width: 768px) {
+            .nav-links {
+                display: none; 
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background: var(--white);
+                padding: 20px;
+                box-shadow: var(--shadow-md);
+                gap: 10px;
+            }
+            .nav-links.mobile-show {
+                display: flex;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .auth-buttons {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="navbar">
+            <a class="logo" onclick="navigateTo('home')">
+                <i class="fa-solid fa-graduation-cap"></i> Smart Study <span>Buddy</span>
+            </a>
+            <i class="fa-solid fa-bars menu-toggle" onclick="toggleMenu()"></i>
+            <ul class="nav-links" id="navLinks">
+                <li><a onclick="navigateTo('home')" class="active" id="nav-home">Home</a></li>
+                <li><a onclick="navigateTo('partners')" id="nav-partners">Partners</a></li>
+                <li><a onclick="navigateTo('rooms')" id="nav-rooms">Rooms</a></li>
+                <li><a onclick="navigateTo('tutors')" id="nav-tutors">Tutors</a></li>
+                <li><a onclick="navigateTo('planner')" id="nav-planner">Planner</a></li>
+                <li><a onclick="navigateTo('ai')" id="nav-ai">AI Buddy</a></li>
+                <li><a onclick="navigateTo('achievements')" id="nav-achievements">Badges</a></li>
+                <li><a onclick="navigateTo('premium')" id="nav-premium">Premium</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <button class="btn btn-outline" onclick="navigateTo('login')">Login</button>
+                <button class="btn btn-primary" onclick="navigateTo('signup')">Sign Up</button>
+            </div>
+        </nav>
+    </header>
+
+    <main id="home" class="page active-page">
+        <section class="hero">
+            <div class="hero-text">
+                <h1>Find study partners who share your <span>academic goals.</span></h1>
+                <p>Welcome to Smart Study Buddy! Match with worldwide peers, launch virtual study groups, organize assignments, and build accountability paths together.</p>
+                <div style="display: flex; gap: 15px;">
+                    <button class="btn btn-primary" onclick="navigateTo('signup')">Get Started Free</button>
+                    <button class="btn btn-outline" onclick="navigateTo('rooms')">Explore Rooms</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="illustration-box">
+                    <i class="fa-solid fa-book-open ill-element ill-1"></i>
+                    <i class="fa-solid fa-pencil ill-element ill-2"></i>
+                    <i class="fa-solid fa-brain ill-element ill-3"></i>
+                    <i class="fa-solid fa-laptop-code ill-element ill-4"></i>
+                    <img src="https://cdn-icons-png.flaticon.com/512/3413/3413535.png" alt="Studying" style="width: 200px; z-index: 2;">
+                </div>
+            </div>
+        </section>
+        <div class="group-tag">POWERED BY GROUP TELETUBBIES • “STUDY TOGETHER, GROW TOGETHER”</div>
+    </main>
+
+    <main id="signup" class="page">
+        <h2 class="section-title">Join the <span>Community</span></h2>
+        <div class="form-container">
+            <form onsubmit="handleRegistration(event)">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" placeholder="Tinky Winky" required>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label>Age</label>
+                        <input type="number" min="12" max="99" placeholder="16" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Grade / Career Path</label>
+                        <input type="text" placeholder="10th Grade" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>School or University</label>
+                    <input type="text" placeholder="Teletubbyland High" required>
+                </div>
+                <div class="form-group">
+                    <label>Favorite Subject</label>
+                    <select required>
+                        <option value="">Select a Subject...</option>
+                        <option value="Math">Mathematics</option>
+                        <option value="English">English Literature</option>
+                        <option value="Science">Science & Biology</option>
+                        <option value="History">History</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Subject You Need Help With</label>
+                    <select required>
+                        <option value="">Select a Subject...</option>
+                        <option value="Math">Mathematics</option>
+                        <option value="English">English Literature</option>
+                        <option value="Science">Science & Biology</option>
+                        <option value="History">History</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Available Study Schedule</label>
+                    <input type="text" placeholder="Evenings, Weekends, Weekdays 5 PM" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 14px;">Create Account</button>
+            </form>
+        </div>
+    </main>
+
+    <main id="login" class="page">
+        <h2 class="section-title">Welcome <span>Back!</span></h2>
+        <div class="form-container" style="max-width: 450px;">
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" placeholder="student@studybuddy.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" placeholder="••••••••" required>
+                </div>
+                <div class="form-options">
+                    <label style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
+                        <input type="checkbox"> Remember me
+                    </label>
+                    <a href="#" onclick="alert('Password reset link sent to your email!')">Forgot password?</a>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 14px;">Log In</button>
+            </form>
+        </div>
+    </main>
+
+    <main id="partners" class="page">
+        <h2 class="section-title">Suggested <span>Study Partners</span></h2>
+        <div class="grid-3">
+            <div class="card partner-card">
+                <div class="avatar"><i class="fa-solid fa-user-astronaut"></i></div>
+                <h3>Maria</h3>
+                <p style="color: #666; font-size: 14px;">Teletubbyland Academy</p>
+                <div class="card-meta">📚 English Master</div>
+                <p style="font-size: 14px; margin-bottom: 15px;"><i class="fa-regular fa-clock"></i> Available: <b>6:00 PM</b></p>
+                <button class="btn btn-outline" style="width: 100%;" onclick="connectPartner(this)">Connect</button>
+            </div>
+            <div class="card partner-card">
+                <div class="avatar"><i class="fa-solid fa-user-ninja"></i></div>
+                <h3>Carlos</h3>
+                <p style="color: #666; font-size: 14px;">Science High School</p>
+                <div class="card-meta">🔬 Science Wizard</div>
+                <p style="font-size: 14px; margin-bottom: 15px;"><i class="fa-regular fa-clock"></i> Available: <b>5:00 PM</b></p>
+                <button class="btn btn-outline" style="width: 100%;" onclick="connectPartner(this)">Connect</button>
+            </div>
+            <div class="card partner-card">
+                <div class="avatar"><i class="fa-solid fa-user-gradient"></i></div>
+                <h3>John</h3>
+                <p style="color: #666; font-size: 14px;">Metro University</p>
+                <div class="card-meta">📐 Math Genius</div>
+                <p style="font-size: 14px; margin-bottom: 15px;"><i class="fa-regular fa-clock"></i> Available: <b>7:00 PM</b></p>
+                <button class="btn btn-outline" style="width: 100%;" onclick="connectPartner(this)">Connect</button>
+            </div>
+        </div>
+    </main>
+
+    <main id="rooms" class="page">
+        <h2 class="section-title">Virtual <span>Study Rooms</span></h2>
+        <div class="grid-3">
+            <div class="card">
+                <span class="room-badge"><i class="fa-solid fa-circle"></i> Live</span>
+                <i class="fa-solid fa-language" style="font-size: 40px; color: var(--purple-main); margin-bottom: 15px;"></i>
+                <h3>English Study Room</h3>
+                <p style="color:#666; margin-top: 5px;">Practicing essays and global literature terms.</p>
+                <div class="room-features">
+                    <span><i class="fa-solid fa-users"></i> 14 Online</span>
+                    <span><i class="fa-solid fa-file-lines"></i> Notes Shared</span>
+                </div>
+                <button class="btn btn-primary" style="width: 100%;" onclick="alert('Entering English Virtual Room via WebRTC Audio...')">Join Room</button>
+            </div>
+            <div class="card">
+                <span class="room-badge" style="background: var(--purple-light);"><i class="fa-solid fa-circle"></i> Live</span>
+                <i class="fa-solid fa-calculator" style="font-size: 40px; color: var(--blue-main); margin-bottom: 15px;"></i>
+                <h3>Math Study Room</h3>
+                <p style="color:#666; margin-top: 5px;">Solving Calculus homework and basic algebra matrices.</p>
+                <div class="room-features">
+                    <span><i class="fa-solid fa-users"></i> 29 Online</span>
+                    <span><i class="fa-solid fa-file-lines"></i> Whiteboard Active</span>
+                </div>
+                <button class="btn btn-primary" style="width: 100%;" onclick="alert('Entering Math Virtual Room via WebRTC Audio...')">Join Room</button>
+            </div>
+            <div class="card">
+                <span class="room-badge"><i class="fa-solid fa-circle"></i> Live</span>
+                <i class="fa-solid fa-flask" style="font-size: 40px; color: var(--green-main); margin-bottom: 15px;"></i>
+                <h3>Science Study Room</h3>
+                <p style="color:#666; margin-top: 5px;">Reviewing biology cellular structures and chemistry trends.</p>
+                <div class="room-features">
+                    <span><i class="fa-solid fa-users"></i> 8 Online</span>
+                    <span><i class="fa-solid fa-file-lines"></i> Shared Notes</span>
+                </div>
+                <button class="btn btn-primary" style="width: 100%;" onclick="alert('Entering Science Virtual Room via WebRTC Audio...')">Join Room</button>
+            </div>
+        </div>
+    </main>
+
+    <main id="tutors" class="page">
+        <h2 class="section-title">Certified <span>Academic Tutors</span></h2>
+        <div class="grid-3" style="max-width: 800px; margin: 0 auto;">
+            <div class="card">
+                <div class="avatar" style="background:#FFF0D4; color:#FF9F1C;"><i class="fa-solid fa-chalkboard-user"></i></div>
+                <h3>Mr. Johnson</h3>
+                <p style="color: var(--purple-main); font-weight: 700;">English Teacher</p>
+                <div class="stars">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+                    <span style="color:#222; font-weight:600;"> 4.9</span>
+                </div>
+                <button class="btn btn-outline" style="width:100%;" onclick="alert('Booking window opened for Mr. Johnson.')">Book Session</button>
+            </div>
+            <div class="card">
+                <div class="avatar" style="background:#EAFDF8; color: var(--green-main);"><i class="fa-solid fa-user-tie"></i></div>
+                <h3>Ms. Perez</h3>
+                <p style="color: var(--blue-main); font-weight: 700;">Math Professor</p>
+                <div class="stars">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    <span style="color:#222; font-weight:600;"> 4.8</span>
+                </div>
+                <button class="btn btn-outline" style="width:100%;" onclick="alert('Booking window opened for Ms. Perez.')">Book Session</button>
+            </div>
+        </div>
+    </main>
+
+    <main id="planner" class="page">
+        <h2 class="section-title">Personal <span>Study Planner</span></h2>
+        <div class="planner-layout">
+            <div class="planner-form-panel">
+                <h3 style="margin-bottom:15px;">Add New Task</h3>
+                <form onsubmit="addPlannerTask(event)">
+                    <div class="form-group">
+                        <label>Task / Subject Title</label>
+                        <input type="text" id="taskTitle" placeholder="e.g., Biology Lab Report" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Day of Week</label>
+                        <select id="taskDay" required>
+                            <option value="Monday">Monday</option>
+                            <option value="Tuesday">Tuesday</option>
+                            <option value="Wednesday">Wednesday</option>
+                            <option value="Thursday">Thursday</option>
+                            <option value="Friday">Friday</option>
+                            <option value="Saturday">Saturday</option>
+                            <option value="Sunday">Sunday</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width:100%;">Schedule Task</button>
+                </form>
+            </div>
+            <div>
+                <h3 style="margin-bottom:15px;">Weekly Focus Queue</h3>
+                <div class="tasks-container" id="tasksContainer">
+                    <div class="task-card">
+                        <div class="task-info">
+                            <h4 class="task-title">Math Exam</h4>
+                            <span>Monday</span>
+                        </div>
+                        <div class="task-actions">
+                            <button class="btn-check" onclick="toggleTaskComplete(this)"><i class="fa-solid fa-circle-check"></i></button>
+                            <button class="btn-delete" onclick="deleteTask(this)"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                    <div class="task-card">
+                        <div class="task-info">
+                            <h4 class="task-title">English Homework</h4>
+                            <span>Tuesday</span>
+                        </div>
+                        <div class="task-actions">
+                            <button class="btn-check" onclick="toggleTaskComplete(this)"><i class="fa-solid fa-circle-check"></i></button>
+                            <button class="btn-delete" onclick="deleteTask(this)"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <main id="ai" class="page">
+        <h2 class="section-title">AI Study <span>Guide Assistant</span></h2>
+        <div class="chat-window">
+            <div class="chat-header">
+                <i class="fa-solid fa-robot" style="font-size: 24px;"></i>
+                <div>
+                    <div>StudyBuddy AI</div>
+                    <div style="font-size: 11px; font-weight: normal; opacity: 0.8;">Guiding you to success step-by-step</div>
+                </div>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="msg msg-ai">
+                    Hello! I am your interactive educational assistant. Ask me questions about concepts you're trying to figure out, and I'll help explain them clearly!
+                </div>
+                <div class="msg msg-user">
+                    Explain photosynthesis.
+                </div>
+                <div class="msg msg-ai">
+                    Photosynthesis is the process by which green plants, algae, and some bacteria capture sunlight to convert carbon dioxide and water into glucose (energy) and oxygen. Think of it like cooking food using light as the oven stove! What specific part of this process would you like me to walk you through?
+                </div>
+            </div>
+            <form class="chat-input-area" onsubmit="sendAiMessage(event)">
+                <input type="text" id="aiInput" placeholder="Ask a structural or conceptual problem..." autocomplete="off" required>
+                <button type="submit" class="btn btn-primary" style="border-radius: var(--radius-md);"><i class="fa-solid fa-paper-plane"></i></button>
+            </form>
+        </div>
+    </main>
+
+    <main id="achievements" class="page">
+        <h2 class="section-title">Your Gamified <span>Achievements</span></h2>
+        <div class="grid-3">
+            <div class="badge-card">
+                <div class="badge-icon">🏆</div>
+                <h3>7-Day Study Streak</h3>
+                <p style="color:#666; font-size:14px; margin-top:5px;">Study consistency level unlocked.</p>
+                <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 100%;"></div></div>
+                <div style="text-align:right; font-size:12px; margin-top:5px; font-weight:700;">7 / 7 Days</div>
+            </div>
+            <div class="badge-card">
+                <div class="badge-icon">🤝</div>
+                <h3>First Study Group</h3>
+                <p style="color:#666; font-size:14px; margin-top:5px;">Joined an active community voice session.</p>
+                <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 100%;"></div></div>
+                <div style="text-align:right; font-size:12px; margin-top:5px; font-weight:700;">1 / 1 Group</div>
+            </div>
+            <div class="badge-card">
+                <div class="badge-icon">⏱️</div>
+                <h3>10 Study Sessions</h3>
+                <p style="color:#666; font-size:14px; margin-top:5px;">Keep going to secure master badge tier!</p>
+                <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 60%;"></div></div>
+                <div style="text-align:right; font-size:12px; margin-top:5px; font-weight:700;">6 / 10 Sessions</div>
+            </div>
+        </div>
+    </main>
+
+    <main id="premium" class="page">
+        <h2 class="section-title">Upgrade Your <span>Study Strategy</span></h2>
+        <div class="pricing-container">
+            <div class="price-card">
+                <h3>Basic Plan</h3>
+                <p style="color:#666;">Essential peer pairing tools</p>
+                <div class="price-amount">$0<span style="font-size:16px; font-weight:normal; color:#666;">/mo</span></div>
+                <hr style="border:0; border-top:1px solid #eee;">
+                <ul class="price-features-list">
+                    <li><i class="fa-solid fa-check"></i> Find regular study partners</li>
+                    <li><i class="fa-solid fa-check"></i> Join public study groups</li>
+                    <li><i class="fa-solid fa-check"></i> Core planner features</li>
+                    <li style="opacity:0.4;"><i class="fa-solid fa-xmark"></i> Advanced AI guidance coaching</li>
+                    <li style="opacity:0.4;"><i class="fa-solid fa-xmark"></i> Private isolated focus spaces</li>
+                </ul>
+                <button class="btn btn-outline" style="width:100%;" disabled>Current Active Plan</button>
+            </div>
+            <div class="price-card premium-active">
+                <div class="premium-ribbon">POPULAR TIER</div>
+                <h3>Smart Buddy Plus</h3>
+                <p style="color:#666;">Complete metrics & automation control</p>
+                <div class="price-amount">$3.99<span style="font-size:16px; font-weight:normal; color:#666;">/mo</span></div>
+                <hr style="border:0; border-top:1px solid #eee;">
+                <ul class="price-features-list">
+                    <li><i class="fa-solid fa-check"></i> Find regular study partners</li>
+                    <li><i class="fa-solid fa-check"></i> Join public study groups</li>
+                    <li><i class="fa-solid fa-check"></i> Core planner features</li>
+                    <li><i class="fa-solid fa-check"></i> <b>Advanced AI guidance coaching</b></li>
+                    <li><i class="fa-solid fa-check"></i> <b>Private isolated focus spaces</b></li>
+                    <li><i class="fa-solid fa-check"></i> <b>Realtime performance analytics</b></li>
+                </ul>
+                <button class="btn btn-primary" style="width:100%;" onclick="alert('Thank you for choosing Premium access checkout via Stripe placeholder!')">Upgrade to Premium</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function navigateTo(pageId) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active-page'));
+
+            const targetPage = document.getElementById(pageId);
+            if(targetPage) {
+                targetPage.classList.add('active-page');
+            }
+
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => link.classList.remove('active'));
+
+            const activeNav = document.getElementById(`nav-${pageId}`);
+            if(activeNav) activeNav.classList.add('active');
+
+            window.scrollTo(0, 0);
+
+            document.getElementById('navLinks').classList.remove('mobile-show');
+        }
+
+        function toggleMenu() {
+            const links = document.getElementById('navLinks');
+            links.classList.toggle('mobile-show');
+        }
+
+        function handleRegistration(event) {
+            event.preventDefault();
+            alert('Account initialized and configured successfully by Group Teletubbies!');
+            navigateTo('home');
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            alert('Welcome back to your dashboard profile environment!');
+            navigateTo('partners');
+        }
+
+        function connectPartner(buttonElement) {
+            if(buttonElement.innerText === "Connect") {
+                buttonElement.innerText = "Request Sent!";
+                buttonElement.style.background = "var(--green-main)";
+                buttonElement.style.color = "var(--white)";
+                buttonElement.style.borderColor = "var(--green-main)";
+            } else {
+                buttonElement.innerText = "Connect";
+                buttonElement.style.background = "transparent";
+                buttonElement.style.color = "var(--purple-main)";
+                buttonElement.style.borderColor = "var(--purple-main)";
+            }
+        }
+
+        function addPlannerTask(event) {
+            event.preventDefault();
+            const titleInput = document.getElementById('taskTitle');
+            const dayInput = document.getElementById('taskDay');
+            
+            const container = document.getElementById('tasksContainer');
+            
+            const taskCard = document.createElement('div');
+            taskCard.className = 'task-card';
+            taskCard.innerHTML = `
+                <div class="task-info">
+                    <h4 class="task-title">${titleInput.value}</h4>
+                    <span>${dayInput.value}</span>
+                </div>
+                <div class="task-actions">
+                    <button class="btn-check" onclick="toggleTaskComplete(this)"><i class="fa-solid fa-circle-check"></i></button>
+                    <button class="btn-delete" onclick="deleteTask(this)"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            `;
+            
+            container.appendChild(taskCard);
+            
+            titleInput.value = '';
+        }
+
+        function toggleTaskComplete(button) {
+            const card = button.closest('.task-card');
+            card.classList.toggle('completed');
+        }
+
+        function deleteTask(button) {
+            const card = button.closest('.task-card');
+            card.remove();
+        }
+
+        function sendAiMessage(event) {
+            event.preventDefault();
+            const inputField = document.getElementById('aiInput');
+            const chatMessages = document.getElementById('chatMessages');
+            const promptText = inputField.value.trim();
+
+            if (!promptText) return;
+
+            const userMsg = document.createElement('div');
+            userMsg.className = 'msg msg-user';
+            userMsg.innerText = promptText;
+            chatMessages.appendChild(userMsg);
+
+            inputField.value = '';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            setTimeout(() => {
+                const aiMsg = document.createElement('div');
+                aiMsg.className = 'msg msg-ai';
+                
+                const lowerPrompt = promptText.toLowerCase();
+                if(lowerPrompt.includes('math') || lowerPrompt.includes('equation') || lowerPrompt.includes('solve')) {
+                    aiMsg.innerText = "To solve formulas, let's break down order of operations together! What values do you currently have allocated for variables?";
+                } else if(lowerPrompt.includes('history') || lowerPrompt.includes('war')) {
+                    aiMsg.innerText = "Great context question! Instead of memorizing dates directly, consider analyzing the economic drivers or social causes first. What specific timeline event has you stuck?";
+                } else {
+                    aiMsg.innerText = `That is an interesting problem regarding "${promptText}". Let's investigate the fundamental rules of the topic first. Can you list the first step or constraint your book suggests?`;
+                }
+                
+                chatMessages.appendChild(aiMsg);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 800);
+        }
+    </script>
+</body>
+</html>
+
